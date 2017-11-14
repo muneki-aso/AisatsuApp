@@ -17,12 +17,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView mTextView;
     EditText mEditText;
 
-    final Calendar calendar = Calendar.getInstance();
-    // カレンダーから現在の '時' を取得
-    int mHour = calendar.get(Calendar.HOUR_OF_DAY);
-    // カレンダーから現在の '分' を取得
-    int mMinute = calendar.get(Calendar.MINUTE);
-    TimePickerDialog timePickerDialog;
+    TimePickerDialog dialog;
+    TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
+        @Override
+        public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
+            //ここでセット
+        }
+    };
+
+    Calendar calendar = Calendar.getInstance();
+    int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
+    int minute = calendar.get(Calendar.MINUTE);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,33 +64,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                13, // 初期値（時間）
 //                0,  // 初期値（分）
 //                true);
+        dialog = new TimePickerDialog(this, android.R.style.Theme_Black, onTimeSetListener, hourOfDay, minute, true);
+        dialog.show();
+        Log.d("UI-PARTS",String.valueOf(hourOfDay));
 
-        TimePickerDialog.OnTimeSetListener listener = new TimePickerDialog.OnTimeSetListener() {
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                mHour = hourOfDay; // '時' を取得
-                mMinute = minute;  // '分' を取得
-            }
-        };
 
-        timePickerDialog = new TimePickerDialog(
-                this,     // 第1引数 : Context
-                listener, // 第2引数 : TimePickerDialog.OnTimeSetListener
-                mHour,    // 第3引数 : 時
-                mMinute,  // 第4引数 : 分
-                true      // 第5引数 : 24時間表示(true)かAM/PM表示(false)か
-        );
 
-        timePickerDialog.show();
 
-        timePickerDialog.getContext();
-        
-
-        if (timePickerDialog>= "2:0" && timePickerDialog < "9:59") {
-            mTextView.setText("おはよう");
-        } else if (timePickerDialog >= "10:0" && timePickerDialog < "17:59") {
-            mTextView.setText("こんにちは");
-        } else if (timePickerDialog >= "18:0" || timePickerDialog < "1:59") {
-            mTextView.setText("こんばんは");
-        }
+//        if (timePickerDialog>= "2:0" && timePickerDialog < "9:59") {
+//            mTextView.setText("おはよう");
+//        } else if (timePickerDialog >= "10:0" && timePickerDialog < "17:59") {
+//            mTextView.setText("こんにちは");
+//        } else if (timePickerDialog >= "18:0" || timePickerDialog < "1:59") {
+//            mTextView.setText("こんばんは");
+//        }
     }
 }
